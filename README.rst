@@ -1,7 +1,7 @@
 PseuDB
 ----
 
-
+|Build Status| |Version|
 
 
 PseuDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
@@ -28,6 +28,8 @@ _ **built-in id** PseuDB always attachs `_oid` to every record, but user can cus
 - **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
 
 
+.. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
+    :target: https://travis-ci.org/harryho/pseudb
 
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
