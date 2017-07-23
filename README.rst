@@ -71,6 +71,8 @@ Example code
 
 - Query data from table1
 
+.. code-block:: python
+
     >>> from pseudb.queries import Query
     >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
     >>> tb = db.get('table1')
