@@ -1,7 +1,7 @@
 PseuDB
 ----
 
-|Build Status| 
+|Build Status| |Coverage| |Version|
 
 
 PseuDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
@@ -20,16 +20,29 @@ Difference between TinyDB and PseuDB
 
 - **No default table** _default table is removed in PseuDB. User needs to create a table first before inserting any data. 
 
-_ **built-in id** PseuDB always attachs `_oid` to every record, but user can customize the unique id field for test purpose. 
+- **Built-in id** PseuDB always attachs `_oid` to every record, but user can customize the unique id field for test purpose. 
 
 - **Only table object can execute CRUD** TinyDB can execute CRUD action, but PseuDB only allow table instance to execute CRUD. This concept is borrowed from lowdb. 
 
 
 - **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
 
+Installation
+************
+
+- Via pip
+
+.. code-block::bash
+
+    pip install pseudb
+
+
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
-
+.. |Coverage| image:: https://coveralls.io/repos/github/harryho/ps4sql/badge.svg?branch=master
+:target: https://coveralls.io/github/harryho/ps4sql?branch=master
+.. |Version| image:: http://img.shields.io/pypi/v/pseudb.svg?style=flat-square
+   :target: https://pypi.python.org/pypi/pseudb/
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
