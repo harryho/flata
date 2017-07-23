@@ -1,7 +1,7 @@
 PseuDB
 ----
 
-|Build Status| |Version|
+|Build Status| 
 
 
 PseuDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
