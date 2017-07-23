@@ -204,9 +204,6 @@ def test_get_idempotent(db):
 
 
 def test_multiple_dbs():
-    """
-    Regression test for issue #3
-    """
     db1 = PseuDB(storage=MemoryStorage)
     db2 = PseuDB(storage=MemoryStorage)
 
@@ -274,12 +271,6 @@ def test_unique_ids(tmpdir):
 
 
 def test_lastid_after_open(tmpdir):
-    """
-    Regression test for issue #34
-
-    :type tmpdir: py._path.local.LocalPath
-    """
-
     NUM = 100
     path = str(tmpdir.join('test.db.json'))
 
@@ -293,9 +284,6 @@ def test_lastid_after_open(tmpdir):
 @pytest.mark.skipif(sys.version_info >= (3, 0),
                     reason="requires python2")
 def test_unicode_memory(db):
-    """
-    Regression test for issue #28
-    """
     unic_str = 'ß'.decode('utf-8')
     byte_str = 'ß'
 
@@ -312,9 +300,6 @@ def test_unicode_memory(db):
 @pytest.mark.skipif(sys.version_info >= (3, 0),
                     reason="requires python2")
 def test_unicode_json(tmpdir):
-    """
-    Regression test for issue #28
-    """
     unic_str1 = 'a'.decode('utf-8')
     byte_str1 = 'a'
 
@@ -343,10 +328,6 @@ def test_unicode_json(tmpdir):
 
 
 def test_oids_json(tmpdir):
-    """
-    Regression test for issue #45
-    """
-
     path = str(tmpdir.join('test.db.json'))
 
     with PseuDB(path) as _db:
@@ -408,7 +389,6 @@ def test_insert_invalid_dict(tmpdir):
 
 
 def test_gc(tmpdir):
-    # See https://github.com/harryho/pseudb/issues/92
     path = str(tmpdir.join('test.db.json'))
     db = PseuDB(path)
     table = db.table('foo')
