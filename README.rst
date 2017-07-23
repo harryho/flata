@@ -27,22 +27,60 @@ Difference between TinyDB and PseuDB
 
 - **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
 
+
 Installation
 ************
 
-- Via pip
+- Via pypi
 
-.. code-block::bash
+.. code-block:: bash
 
-    pip install pseudb
+    $ pip install pseudb
 
+- Via github
+
+.. code-block:: bash
+
+    $ pip install -e git+https://github.com/harryho/pseudb@master#egg=pseudb
+
+
+Example code
+************
+
+- Create database file with empty table1
+
+.. code-block:: python
+
+    >>> from pseudb import PseuDB, where
+    >>> from pseudb.storages import JSONStorage
+    >>> from pseudb.middlewares import CachingMiddleware
+    >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
+    >>> db.table('table1') # Method table will create or retrieve if it exists
+    >>> db.get('table1')  # Method get only retrieve the table it exists
+
+- Insert or update data into table1
+
+.. code-block:: python
+
+    >>> db.table('table1').insert({'data':1 })
+    >>> db.get('table1').insert({'data':2 })
+    >>> tb = db.get('table1')
+    >>> tb.all()
+    >>> tb.update({'data': 100}, where('data') ==1 )
+    >>> tb.all()
+
+- Query data from table1
+    >>> from pseudb.queries import Query
+    >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
+    >>> tb = db.get('table1')
+    >>> tb.search(Query().data == 2)
 
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
-.. |Coverage| image:: https://coveralls.io/repos/github/harryho/ps4sql/badge.svg?branch=master
-:target: https://coveralls.io/github/harryho/ps4sql?branch=master
+.. |Coverage| image:: https://coveralls.io/repos/github/harryho/pseudb/badge.svg?branch=master
+    :target: https://coveralls.io/github/harryho/pseudb?branch=master
 .. |Version| image:: http://img.shields.io/pypi/v/pseudb.svg?style=flat-square
-   :target: https://pypi.python.org/pypi/pseudb/
+    :target: https://pypi.python.org/pypi/pseudb/
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb

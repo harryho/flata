@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="pseudb",
-    version="1.0.0",
+    version="1.1.0",
     packages=find_packages(),
 
     # development metadata
@@ -26,7 +26,7 @@ setup(
     keywords="database json nosql",
     url="https://github.com/harryho/pseudb",
     classifiers=[
-        # "Development Status :: 5 - Production/Stable",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Intended Audience :: System Administrators",
         "License :: OSI Approved :: MIT License",
