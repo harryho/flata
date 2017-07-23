@@ -53,8 +53,7 @@ Example code
 
     >>> from pseudb import PseuDB, where
     >>> from pseudb.storages import JSONStorage
-    >>> from pseudb.middlewares import CachingMiddleware
-    >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
+    >>> db = PseuDB('/path/to/db.json', storage=JSONStorage)
     >>> db.table('table1') # Method table will create or retrieve if it exists
     >>> db.get('table1')  # Method get only retrieve the table it exists
 
@@ -69,14 +68,14 @@ Example code
     >>> tb.update({'data': 100}, where('data') ==1 )
     >>> tb.all()
 
+
 - Query data from table1
 
 .. code-block:: python
 
-    >>> from pseudb.queries import Query
-    >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
     >>> tb = db.get('table1')
     >>> tb.search(Query().data == 2)
+
 
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
