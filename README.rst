@@ -70,6 +70,7 @@ Example code
     >>> tb.all()
 
 - Query data from table1
+
     >>> from pseudb.queries import Query
     >>> db = PseuDB('/path/to/db.json', storage=CachingMiddleware(JSONStorage))
     >>> tb = db.get('table1')
