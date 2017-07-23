@@ -1,6 +1,9 @@
 PseuDB
 ----
 
+
+
+
 PseuDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
 oriented database optimized for PseuServer and fun :) It's written in pure
 Python and has no external dependencies. The target are small apps or 

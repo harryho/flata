@@ -1,0 +1,24 @@
+language: python
+sudo: false
+python:
+  - "pypy"
+  - "pypy3.3-5.2-alpha1"
+  - "nightly"
+  - "3.6"
+  - "3.5"
+  - "3.4"
+  - "3.3"
+  - "2.7"
+  - "2.6"
+matrix:
+  allow_failures:
+    - python: nightly
+install:
+  - pip install -U pytest
+  - pip install coverage
+  - pip install coveralls
+  - pip install pytest-cov
+script:
+  py.test -v --cov pseudb
+after_success:
+  coveralls
