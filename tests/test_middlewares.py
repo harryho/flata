@@ -25,7 +25,7 @@ def test_caching(storage):
 
 def test_caching_read():
     db = PseuDB(storage=CachingMiddleware(MemoryStorage))
-    assert db.all() == []
+    assert not db.all()
 
 
 def test_caching_write_many(storage):
@@ -80,7 +80,7 @@ def test_caching_json_write(tmpdir):
     path = str(tmpdir.join('test.db'))
 
     with PseuDB(path, storage=CachingMiddleware(JSONStorage)) as db:
-        db.insert({'key': 'value'})
+        db.table('t').insert({'key': 'value'})
 
     # Verify database filesize
     statinfo = os.stat(path)
@@ -93,4 +93,4 @@ def test_caching_json_write(tmpdir):
 
     # Repoen database
     with PseuDB(path, storage=CachingMiddleware(JSONStorage)) as db:
-        assert db.all() == [{'key': 'value'}]
+        assert db.table('t').all() == [{'_oid':1, 'key': 'value'}]

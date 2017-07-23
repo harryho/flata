@@ -278,7 +278,7 @@ def test_lastid_after_open(tmpdir):
         _db.table('t').insert_multiple({'i': i} for i in range(NUM))
 
     with PseuDB(path) as _db:
-        assert _db._last_id == NUM
+        assert _db.table('t')._last_id == NUM
 
 
 @pytest.mark.skipif(sys.version_info >= (3, 0),
