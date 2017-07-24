@@ -378,23 +378,6 @@ def test_gc(tmpdir):
     db.close()
 
 
-# def test_non_default_table():
-#     db = PseuDB(storage=MemoryStorage)
-#     assert [PseuDB.DEFAULT_TABLE] == list(db.tables())
-
-#     db = PseuDB(storage=MemoryStorage, default_table='non-default')
-#     assert set(['non-default']) == db.tables()
-
-#     db.purge_tables()
-#     PseuDB.DEFAULT_TABLE = 'non-default'
-#     db = PseuDB(storage=MemoryStorage)
-#     assert set(['non-default']) == db.tables()
-
-
-
-
-
-
 def test_empty_write(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
@@ -405,6 +388,13 @@ def test_empty_write(tmpdir):
     PseuDB(path).close()
     PseuDB(path, storage=ReadOnlyMiddleware()).close()
 
+
+def test_not_default_oid (tmpdir):
+    path = str(tmpdir.join('test.db.json'))
+    db = PseuDB(path)
+    table = db.table('foo', oid='_not_default_id')
+    table.insert({'something': 'else'})
+    assert table.all() == [{'_not_default_id': 1,'something': 'else'}]
 
 def test_query_cache():
     db = PseuDB(storage=MemoryStorage)
