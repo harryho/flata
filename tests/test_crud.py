@@ -333,7 +333,18 @@ def test_oids_json(tmpdir):
         assert len(_db.table('t').all()) == 1
 
 
-def test_insert_array_string(tmpdir):
+
+def test_insert_object(tmpdir):
+    path = str(tmpdir.join('test.db.json'))
+
+    with PseuDB(path) as _db:
+        _db.purge_tables()
+        data = [ {'int': 1, 'object' : {'object_id': 2}}]
+        _db.table('t').insert_multiple(data)
+
+        assert len(_db.table('t').all()) == [{'_oid': 1, 'int': 1, 'object': {'object_id': 2}}]
+
+def test_insert_invalid_array_string(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
     with PseuDB(path) as _db:
