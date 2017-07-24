@@ -76,6 +76,14 @@ Example code
     >>> tb = db.get('table1')
     >>> tb.search(Query().data == 2)
 
+- Customize default unique id field `_oid`
+
+.. code-block:: python
+
+    >>> tb2 = db.table('table2' , oid = '_guid')
+    >>> tb2.insert({'data':1 })
+    >>> tb2.all()
+
 
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
