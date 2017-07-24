@@ -10,7 +10,7 @@ if __name__ == '__main__':
     #        'dict': {'hp': 13, 'sp': 5},
     #        'bool': [True, False, True, False]}
     #
-    db_file = str(''.join('test.db.json'))
+    db_file = str(''.join('db.json'))
     #
     # # path = str(tmpdir.join('test.db'))
     # storage = JSONStorage(db_file)
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 
     db = PseuDB(str(db_file), sort_keys=True, indent=4, separators=(',', ': '))
-    
+
     # Clean up
     db.purge_tables()
 
