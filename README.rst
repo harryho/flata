@@ -85,6 +85,12 @@ Example code
     >>> tb2.all()
 
 
+Stable release
+**************
+
+- PseuDB_ 1.1.0
+
+
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
@@ -94,3 +100,4 @@ Example code
     :target: https://pypi.python.org/pypi/pseudb/
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
+.. _PseuDB: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
