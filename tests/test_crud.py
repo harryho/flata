@@ -48,8 +48,8 @@ def test_insert(db):
 
 def test_insert_ids(db):
     db.purge_tables()
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == 1
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == 2
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
 
 
 def test_insert_multiple(db):
@@ -89,9 +89,12 @@ def test_insert_multiple_with_ids(db):
     db.purge_tables()
 
     # Insert multiple from list
-    assert db.table('t').insert_multiple([{'int': 1, 'char': 'a'},
-                               {'int': 1, 'char': 'b'},
-                               {'int': 1, 'char': 'c'}]) == [1, 2, 3]
+    assert db.table('t').insert_multiple(
+        [{'int': 1, 'char': 'a'},
+        {'int': 1, 'char': 'b'},
+        {'int': 1, 'char': 'c'}]) == [{'_oid': 1, 'char': 'a', 'int': 1},
+                                     {'_oid': 2, 'char': 'b', 'int': 1}, 
+                                     {'_oid': 3, 'char': 'c', 'int': 1}]
 
 
 def test_remove(db):
@@ -127,8 +130,8 @@ def test_update(db):
 
 def test_update_returns_ids(db):
     db.purge_tables()
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == 1
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == 2
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
 
     assert db.table('t').update({'char': 'b'}, where('int') == 1) == [1, 2]
 
@@ -311,13 +314,16 @@ def test_oids_json(tmpdir):
 
     with PseuDB(path) as _db:
         _db.purge_tables()
-        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == 1
-        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == 2
+        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
+        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
 
         _db.purge_tables()
-        assert _db.table('t').insert_multiple([{'int': 1, 'char': 'a'},
-                                    {'int': 1, 'char': 'b'},
-                                    {'int': 1, 'char': 'c'}]) == [1, 2, 3]
+        assert _db.table('t').insert_multiple(
+            [{'int': 1, 'char': 'a'}
+            ,{'int': 1, 'char': 'b'}
+            ,{'int': 1, 'char': 'c'}]) == [{'_oid': 1, 'char': 'a', 'int': 1}
+                                            ,{'_oid': 2, 'char': 'b', 'int': 1}
+                                            ,{'_oid': 3, 'char': 'c', 'int': 1}]
 
         assert _db.table('t').contains(oids=[1, 2])
         assert not _db.table('t').contains(oids=[88])

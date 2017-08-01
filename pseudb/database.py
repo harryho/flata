@@ -374,7 +374,7 @@ class Table(object):
         Insert a new element into the table.
 
         :param element: the element to insert
-        :returns: the inserted element's ID
+        :returns: the inserted element with ID
         """
 
         if not isinstance(self, Table):
@@ -393,14 +393,14 @@ class Table(object):
 
         self._write(items)
 
-        return oid
+        return element
 
     def insert_multiple(self, elements):
         """
         Insert multiple elements into the table.
 
         :param elements: a list of elements to insert
-        :returns: a list containing the inserted elements' IDs
+        :returns: a list containing the inserted elements with IDs
         """
         if not isinstance(self, Table):
             raise ValueError('Only table instance can support insert action.')
@@ -419,7 +419,7 @@ class Table(object):
 
         self._write(items)
 
-        return oids
+        return elements
 
     def remove(self, cond=None, oids=None):
         """
