@@ -23,12 +23,12 @@ class Element(dict):
 
 class StorageProxy(object):
 
-    DEFAULT_OID_FIELD = '_oid'
+    DEFAULT_ID_FIELD = '_oid'
 
     def __init__(self, storage, table_name, **kwargs):
         self._storage = storage
         self._table_name = table_name
-        self._oid = kwargs.pop('oid', StorageProxy.DEFAULT_OID_FIELD)
+        self._id_field = kwargs.pop('id_field', StorageProxy.DEFAULT_ID_FIELD)
 
     def read(self):
         try:
@@ -43,7 +43,7 @@ class StorageProxy(object):
         #     data[oid] = Element(val, oid)
 
         for item in raw_data:
-             oid = item[self._oid]
+             oid = item[self._id_field]
              data[oid] = Element(item, oid)
 
         return data
@@ -66,8 +66,8 @@ class StorageProxy(object):
         return self._table_name
 
     @property
-    def oid(self):
-        return self._oid or StorageProxy.DEFAULT_OID_FIELD
+    def id_field(self):
+        return self._id_field or StorageProxy.DEFAULT_ID_FIELD
 
 
 
@@ -238,7 +238,7 @@ class Table(object):
     Represents a single PseuDB Table.
     """
 
-    def __init__(self, storage, cache_size=10, oid=StorageProxy.DEFAULT_OID_FIELD):
+    def __init__(self, storage, cache_size=10, **kwargs):
         """
         Get access to a table.
 
@@ -249,7 +249,7 @@ class Table(object):
 
         self._storage = storage
         self._table_name = storage.table_name
-        self._oid = storage.oid
+        self._id_field = storage.id_field
         self._query_cache = LRUCache(capacity=cache_size)
 
         data = self._read()
@@ -394,7 +394,7 @@ class Table(object):
         data = self._read()
 
         items = list(data.values())
-        element[self._oid] = oid
+        element[self._id_field] = oid
         items.append(element)
 
         self._write(items)
@@ -418,7 +418,7 @@ class Table(object):
         for element in elements:
             oid = self._get_next_id()
             oids.append(oid)
-            element[self._oid] = oid
+            element[self._id_field] = oid
             items.append(element)
 
             # data[oid] = element

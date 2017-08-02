@@ -412,9 +412,34 @@ def test_empty_write(tmpdir):
 def test_not_default_oid (tmpdir):
     path = str(tmpdir.join('test.db.json'))
     db = PseuDB(path)
-    table = db.table('foo', oid='_not_default_id')
+    table = db.table('foo', id_field='_not_default_id')
     table.insert({'something': 'else'})
     assert table.all() == [{'_not_default_id': 1,'something': 'else'}]
+
+def test_update_with_not_default_id(tmpdir):
+    path = str(tmpdir.join('test.db.json'))
+    db = PseuDB(path)
+    table = db.table('foo', id_field='_not_default_id')
+    table.insert({'something': 'else'})
+
+    assert db.table('foo').count(where('something') == 'else') == 1
+
+    db.table('foo').update({'something': 'updated'}, where('something') == 'else')
+
+    assert db.table('foo').count(where('something') == 'updated') == 1
+    # assert db.table('t').count(where('int') == 1) == 2  
+
+def test_remove_with_not_default_id(tmpdir):
+    path = str(tmpdir.join('test.db.json'))
+    db = PseuDB(path)
+    table = db.table('foo', id_field='_not_default_id')
+    table.insert({'something': 'else'})
+
+    assert db.table('foo').count(where('something') == 'else') == 1
+
+    db.table('foo').remove(where('something') == 'else')
+
+    assert db.table('foo').all() == []
 
 def test_query_cache():
     db = PseuDB(storage=MemoryStorage)
