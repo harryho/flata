@@ -281,11 +281,14 @@ class Table(object):
         """
 
         data = self._read()
+        updated_data = []
 
         if oids is not None:
             # Processed element specified by id
             for oid in oids:
                 func(data, oid)
+                if oid in data:
+                    updated_data.append(data[oid])
 
         else:
             # Collect affected oids
@@ -296,12 +299,15 @@ class Table(object):
                 if cond(data[oid]):
                     func(data, oid)
                     oids.append(oid)
+                    if oid in data:
+                        updated_data.append(data[oid])
+
         
-        upated_data = list(data.values())
+        new_data = list(data.values())
 
-        self._write(upated_data)
+        self._write(new_data)
 
-        return oids
+        return oids, updated_data
 
     def clear_cache(self):
         """

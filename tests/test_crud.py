@@ -116,7 +116,7 @@ def test_remove_ids(db):
 
 
 def test_remove_returns_ids(db):
-    assert db.table('t').remove(where('char') == 'b') == [2]
+    assert db.table('t').remove(where('char') == 'b')[0] == [2]
 
 
 def test_update(db):
@@ -133,7 +133,10 @@ def test_update_returns_ids(db):
     assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
     assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
 
-    assert db.table('t').update({'char': 'b'}, where('int') == 1) == [1, 2]
+    assert db.table('t').update(
+        {'char': 'b'}, where('int') == 1) == ( 
+            [1, 2], [{'_oid': 1, 'char': 'b', 'int': 1},
+                {'_oid': 2, 'char': 'b', 'int': 1}])
 
 
 def test_update_transform(db):

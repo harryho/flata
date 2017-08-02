@@ -20,10 +20,11 @@ Difference between TinyDB and PseuDB
 
 - **No default table** _default table is removed in PseuDB. User needs to create a table first before inserting any data. 
 
-- **Built-in id** PseuDB always attachs `_oid` to every record, but user can customize the unique id field for test purpose. 
+- **Built-in ID** PseuDB always attachs `_oid` to every record, but user can customize the unique id field for test purpose. 
 
 - **Only table object can execute CRUD** TinyDB can execute CRUD action, but PseuDB only allow table instance to execute CRUD. This concept is borrowed from lowdb. 
 
+- **Return object instead of ID** PseuDB will return new object with ID after the data is inserted. It is good for Restful API to present the latest data on the database. 
 
 - **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
 
@@ -88,9 +89,14 @@ Example code
 Stable release
 **************
 
+- |PseuDB 1.1.0|
+
+Nightly Build
+*************
+
+- |PseuDB 2.1.0RC1|
+
 - PseuDB_ 1.1.0
-
-
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
@@ -100,4 +106,5 @@ Stable release
     :target: https://pypi.python.org/pypi/pseudb/
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
-.. _PseuDB: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
+.. |PseuDB 1.1.0| target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
+.. |PseuDB 2.1.0RC1| target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0rc1
