@@ -96,7 +96,7 @@ Nightly Build
 
 - |PseuDB 2.1.0RC1|
 
-- PseuDB_ 1.1.0
+
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
@@ -106,5 +106,5 @@ Nightly Build
     :target: https://pypi.python.org/pypi/pseudb/
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
-.. |PseuDB 1.1.0| target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
-.. |PseuDB 2.1.0RC1| target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0rc1
+.. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
+.. |PseuDB 2.1.0RC1| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0rc1
