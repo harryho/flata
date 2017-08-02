@@ -81,7 +81,7 @@ Example code
 
 .. code-block:: python
 
-    >>> tb2 = db.table('table2' , oid = '_guid')
+    >>> tb2 = db.table('table2' , id_field = '_guid')
     >>> tb2.insert({'data':1 })
     >>> tb2.all()
 
@@ -89,12 +89,15 @@ Example code
 Stable release
 **************
 
+- |PseuDB 2.1.0|
+
+
+Old versions
+************
+
+- |PseuDB 2.0.0|
+
 - |PseuDB 1.1.0|
-
-Nightly Build
-*************
-
-- |PseuDB 2.1.0RC1|
 
 
 
@@ -107,4 +110,5 @@ Nightly Build
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
 .. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
-.. |PseuDB 2.1.0RC1| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0rc1
+.. |PseuDB 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.0.0
+.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0
