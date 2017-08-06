@@ -100,6 +100,22 @@ Old versions
 - |PseuDB 1.1.0|
 
 
+Change log
+**********
+
+- PseuDB 3.1.0
+
+    Change the get method 
+
+- PseuDB 3.0.0 
+
+    Change the built-in field from '_oid' to 'id'.
+
+- PseuDB 2.1.0
+
+    Change the insert and update method to return new or updated objects.
+
+
 
 .. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
     :target: https://travis-ci.org/harryho/pseudb
@@ -111,4 +127,4 @@ Old versions
 .. _lowdb: https://github.com/typicode/lowdb
 .. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
 .. |PseuDB 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.0.0
-.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0
+.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0 

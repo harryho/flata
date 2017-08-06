@@ -105,7 +105,7 @@ def test_remove(db):
 def test_remove_by_id(db):
     db.table('t').remove(where('id') == 1)
     assert len(db.table('t').all()) == 2
-    db.table('t').remove( oids = [2] )
+    db.table('t').remove( ids = [2] )
     assert len(db.table('t').all()) == 1  
 
 
@@ -116,7 +116,7 @@ def test_remove_multiple(db):
 
 
 def test_remove_ids(db):
-    db.table('t').remove(oids=[1, 2])
+    db.table('t').remove(ids=[1, 2])
 
     assert len(db.table('t').all()) == 1
 
@@ -169,7 +169,7 @@ def test_update_transform(db):
 
 
 def test_update_ids(db):
-    db.table('t').update({'int': 2}, oids=[1, 2])
+    db.table('t').update({'int': 2}, ids=[1, 2])
 
     assert db.table('t').count(where('int') == 2) == 2
 
@@ -199,8 +199,8 @@ def test_get(db):
 
 def test_get_ids(db):
     el = db.table('t').all()[0]
-    assert db.table('t').get(oid=el.oid) == el
-    assert db.table('t').get(oid=float('NaN')) is None
+    assert db.table('t').get(id=el.id) == el
+    assert db.table('t').get(id=float('NaN')) is None
 
 
 def test_count(db):
@@ -214,8 +214,8 @@ def test_contains(db):
 
 
 def test_contains_ids(db):
-    assert db.table('t').contains(oids=[1, 2])
-    assert not db.table('t').contains(oids=[88])
+    assert db.table('t').contains(ids=[1, 2])
+    assert not db.table('t').contains(ids=[88])
 
 
 def test_get_idempotent(db):
@@ -257,7 +257,7 @@ def test_unique_ids(tmpdir):
     with PseuDB(path) as _db:
         data = _db.table('t').all()
 
-        assert data[0].oid != data[1].oid
+        assert data[0].id != data[1].id
 
     # Verify ids stay unique when inserting/removing
     with PseuDB(path) as _db:
@@ -267,7 +267,7 @@ def test_unique_ids(tmpdir):
 
         assert len(_db.table('t').all()) == 4
 
-        ids = [e.oid for e in _db.table('t').all()]
+        ids = [e.id for e in _db.table('t').all()]
         assert len(ids) == len(set(ids))
 
 
@@ -344,17 +344,17 @@ def testids_json(tmpdir):
                                             ,{'id': 2, 'char': 'b', 'int': 1}
                                             ,{'id': 3, 'char': 'c', 'int': 1}]
 
-        assert _db.table('t').contains(oids=[1, 2])
-        assert not _db.table('t').contains(oids=[88])
+        assert _db.table('t').contains(ids=[1, 2])
+        assert not _db.table('t').contains(ids=[88])
 
-        _db.table('t').update({'int': 2}, oids=[1, 2])
+        _db.table('t').update({'int': 2}, ids=[1, 2])
         assert _db.table('t').count(where('int') == 2) == 2
 
         el = _db.table('t').all()[0]
-        assert _db.table('t').get(oid=el.oid) == el
-        assert _db.table('t').get(oid=float('NaN')) is None
+        assert _db.table('t').get(id=el.id) == el
+        assert _db.table('t').get(id=float('NaN')) is None
 
-        _db.table('t').remove(oids=[1, 2])
+        _db.table('t').remove(ids=[1, 2])
         assert len(_db.table('t').all()) == 1
 
 

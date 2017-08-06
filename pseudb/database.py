@@ -11,14 +11,14 @@ class Element(dict):
     Represents an element stored in the database.
 
     This is a transparent proxy for database elements. It exists
-    to provide a way to access an element's id via ``el.oid``.
+    to provide a way to access an element's id via ``el.id``.
     """
-    def __init__(self, value=None, oid=None, **kwargs):
+    def __init__(self, value=None, id=None, **kwargs):
         super(Element, self).__init__(**kwargs)
 
         if value is not None:
             self.update(value)
-            self.oid = oid
+            self.id = id
 
 
 class StorageProxy(object):
@@ -39,12 +39,12 @@ class StorageProxy(object):
 
         data = {}
         # for key, val in iteritems(raw_data):
-        #     oid = int(key)
-        #     data[oid] = Element(val, oid)
+        #     id = int(key)
+        #     data[id] = Element(val, id)
 
         for item in raw_data:
-             oid = item[self._id_field]
-             data[oid] = Element(item, oid)
+             id = item[self._id_field]
+             data[id] = Element(item, id)
 
         return data
 
@@ -122,7 +122,7 @@ class PseuDB(object):
 
         :param name: The name of the table. It is a required input.
         :type name: str
-        :param oid: Customize the object id field.
+        :param id: Customize the object id field.
         :param cache_size: How many query results to cache.
 
         """
@@ -258,7 +258,7 @@ class Table(object):
         else:
             self._last_id = 0
 
-    def process_elements(self, func, cond=None, oids=None):
+    def process_elements(self, func, cond=None, ids=None):
         """
         Helper function for processing all elements specified by condition
         or IDs.
@@ -274,40 +274,40 @@ class Table(object):
 
         :param func: the function to execute on every included element.
                      first argument: all data
-                     second argument: the current oid
+                     second argument: the current id
         :param cond: elements to use, or
-        :param oids: elements to use
+        :param ids: elements to use
         :returns: the element IDs that were affected during processed
         """
 
         data = self._read()
         updated_data = []
 
-        if oids is not None:
+        if ids is not None:
             # Processed element specified by id
-            for oid in oids:
-                func(data, oid)
-                if oid in data:
-                    updated_data.append(data[oid])
+            for id in ids:
+                func(data, id)
+                if id in data:
+                    updated_data.append(data[id])
 
         else:
-            # Collect affected oids
-            oids = []
+            # Collect affected ids
+            ids = []
 
             # Processed elements specified by condition
-            for oid in list(data):
-                if cond(data[oid]):
-                    func(data, oid)
-                    oids.append(oid)
-                    if oid in data:
-                        updated_data.append(data[oid])
+            for id in list(data):
+                if cond(data[id]):
+                    func(data, id)
+                    ids.append(id)
+                    if id in data:
+                        updated_data.append(data[id])
 
         
         new_data = list(data.values())
 
         self._write(new_data)
 
-        return oids, updated_data
+        return ids, updated_data
 
     def clear_cache(self):
         """
@@ -386,7 +386,7 @@ class Table(object):
         if not isinstance(self, Table):
             raise ValueError('Only table instance can support insert action.')
 
-        oid = self._get_next_id()
+        id = self._get_next_id()
 
         if not isinstance(element, dict):
             raise ValueError('Element is not a dictionary')
@@ -394,7 +394,7 @@ class Table(object):
         data = self._read()
 
         items = list(data.values())
-        element[self._id_field] = oid
+        element[self._id_field] = id
         items.append(element)
 
         self._write(items)
@@ -411,37 +411,37 @@ class Table(object):
         if not isinstance(self, Table):
             raise ValueError('Only table instance can support insert action.')
 
-        oids = []
+        ids = []
         data = self._read()
         items = list(data.values())
 
         for element in elements:
-            oid = self._get_next_id()
-            oids.append(oid)
-            element[self._id_field] = oid
+            id = self._get_next_id()
+            ids.append(id)
+            element[self._id_field] = id
             items.append(element)
 
-            # data[oid] = element
+            # data[id] = element
 
         self._write(items)
 
         return elements
 
-    def remove(self, cond=None, oids=None):
+    def remove(self, cond=None, ids=None):
         """
         Remove all matching elements.
 
         :param cond: the condition to check against
         :type cond: query
-        :param oids: a list of element IDs
-        :type oids: list
+        :param ids: a list of element IDs
+        :type ids: list
         :returns: a list containing the removed element's ID
         """
 
-        return self.process_elements(lambda data, oid: data.pop(oid),
-                                     cond, oids)
+        return self.process_elements(lambda data, id: data.pop(id),
+                                     cond, ids)
 
-    def update(self, fields, cond=None, oids=None):
+    def update(self, fields, cond=None, ids=None):
         """
         Update all matching elements to have a given set of fields.
 
@@ -450,20 +450,20 @@ class Table(object):
         :type fields: dict | dict -> None
         :param cond: which elements to update
         :type cond: query
-        :param oids: a list of element IDs
-        :type oids: list
+        :param ids: a list of element IDs
+        :type ids: list
         :returns: a list containing the updated element's ID
         """
 
         if callable(fields):
             return self.process_elements(
-                lambda data, oid: fields(data[oid]),
-                cond, oids
+                lambda data, id: fields(data[id]),
+                cond, ids
             )
         else:
             return self.process_elements(
-                lambda data, oid: data[oid].update(fields),
-                cond, oids
+                lambda data, id: data[id].update(fields),
+                cond, ids
             )
 
     def purge(self):
@@ -493,7 +493,7 @@ class Table(object):
 
         return elements[:]
 
-    def get(self, cond=None, oid=None):
+    def get(self, cond=None, id=None):
         """
         Get exactly one element specified by a query or and ID.
 
@@ -502,7 +502,7 @@ class Table(object):
         :param cond: the condition to check against
         :type cond: Query
 
-        :param oid: the element's ID
+        :param id: the element's ID
 
         :returns: the element or None
         :rtype: Element | None
@@ -511,9 +511,9 @@ class Table(object):
         # Cannot use process_elements here because we want to return a
         # specific element
 
-        if oid is not None:
+        if id is not None:
             # Element specified by ID
-            return self._read().get(oid, None)
+            return self._read().get(id, None)
 
         # Element specified by condition
         for element in self.all():
@@ -530,22 +530,22 @@ class Table(object):
 
         return len(self.search(cond))
 
-    def contains(self, cond=None, oids=None):
+    def contains(self, cond=None, ids=None):
         """
         Check wether the database contains an element matching a condition or
         an ID.
 
-        If ``oids`` is set, it checks if the db contains an element with one
+        If ``ids`` is set, it checks if the db contains an element with one
         of the specified.
 
         :param cond: the condition use
         :type cond: Query
-        :param oids: the element IDs to look for
+        :param ids: the element IDs to look for
         """
 
-        if oids is not None:
+        if ids is not None:
             # Elements specified by ID
-            return any(self.get(oid=oid) for oid in oids)
+            return any(self.get(id=id) for id in ids)
 
         # Element specified by condition
         return self.get(cond) is not None
