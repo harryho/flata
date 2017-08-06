@@ -24,7 +24,7 @@ Difference between TinyDB and PseuDB
 
 - **Only table object can execute CRUD** TinyDB can execute CRUD action, but PseuDB only allow table instance to execute CRUD. This concept is borrowed from lowdb. 
 
-- **Return object instead of ID** PseuDB will return new object with ID after the data is inserted or updated. It is good for Restful API to present the latest data in the database. 
+- **Return object instead of ID** PseuDB will return new or updated objects with IDs after the data is inserted or updated. It is good for Restful API to present the latest data in the database. 
 
 - **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
 
