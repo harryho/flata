@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from pseudb import PseuDB, where
+from pseudb import PseuDB, where, Query
 from pseudb.storages import MemoryStorage
 from pseudb.middlewares import Middleware
 
@@ -48,8 +48,8 @@ def test_insert(db):
 
 def test_insert_ids(db):
     db.purge_tables()
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 1, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 2, 'char': 'a', 'int': 1}
 
 
 def test_insert_multiple(db):
@@ -92,15 +92,21 @@ def test_insert_multiple_with_ids(db):
     assert db.table('t').insert_multiple(
         [{'int': 1, 'char': 'a'},
         {'int': 1, 'char': 'b'},
-        {'int': 1, 'char': 'c'}]) == [{'_oid': 1, 'char': 'a', 'int': 1},
-                                     {'_oid': 2, 'char': 'b', 'int': 1}, 
-                                     {'_oid': 3, 'char': 'c', 'int': 1}]
+        {'int': 1, 'char': 'c'}]) == [{'id': 1, 'char': 'a', 'int': 1},
+                                     {'id': 2, 'char': 'b', 'int': 1}, 
+                                     {'id': 3, 'char': 'c', 'int': 1}]
 
 
 def test_remove(db):
     db.table('t').remove(where('char') == 'b')
     assert len(db.table('t').all()) == 2
     assert db.table('t').count(where('int') == 1) == 2
+
+def test_remove_by_id(db):
+    db.table('t').remove(where('id') == 1)
+    assert len(db.table('t').all()) == 2
+    db.table('t').remove( oids = [2] )
+    assert len(db.table('t').all()) == 1  
 
 
 def test_remove_multiple(db):
@@ -130,13 +136,13 @@ def test_update(db):
 
 def test_update_returns_ids(db):
     db.purge_tables()
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
-    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 1, 'char': 'a', 'int': 1}
+    assert db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 2, 'char': 'a', 'int': 1}
 
     assert db.table('t').update(
         {'char': 'b'}, where('int') == 1) == ( 
-            [1, 2], [{'_oid': 1, 'char': 'b', 'int': 1},
-                {'_oid': 2, 'char': 'b', 'int': 1}])
+            [1, 2], [{'id': 1, 'char': 'b', 'int': 1},
+                {'id': 2, 'char': 'b', 'int': 1}])
 
 
 def test_update_transform(db):
@@ -169,13 +175,23 @@ def test_update_ids(db):
 
 
 def test_search(db):
+    assert len(db.table('t').all() ) == 3
     assert not db.table('t')._query_cache
     assert len(db.table('t').search(where('int') == 1)) == 3
 
     assert len(db.table('t')._query_cache) == 1
     assert len(db.table('t').search(where('int') == 1)) == 3  # Query result from cache
+    assert len(db.table('t').search(~(where('char')=='a'))) == 2
+    assert len(db.table('t').search((where('int') == 1) & (where('char')=='a'))) == 1
+    assert len(db.table('t').search((where('char')=='b') |  (where('char')=='a'))) == 2
 
-
+def test_search_query(db):
+    assert len(db.table('t').search(Query().char == 'a')) == 1
+    assert len(db.table('t').search(Query().char == 'b')) == 1
+    assert len(db.table('t').search((Query().char == 'c') & (Query().int == 1 ))) == 1
+    assert len(db.table('t').search((Query().char == 'c') | (Query().char == 'a' ))) == 2
+    assert len(db.table('t').search((Query()['char'] == 'c') & (Query()['int'] == 1 ))) == 1
+    assert len(db.table('t').search((Query()['char']== 'c') | (Query()['char'] == 'a' ))) == 2
 def test_get(db):
     item = db.table('t').get(where('char') == 'b')
     assert item['char'] == 'b'
@@ -312,21 +328,21 @@ def test_unicode_json(tmpdir):
         assert _db.table('t').contains(where('value') == unic_str2)
 
 
-def test_oids_json(tmpdir):
+def testids_json(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
     with PseuDB(path) as _db:
         _db.purge_tables()
-        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 1, 'char': 'a', 'int': 1}
-        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'_oid': 2, 'char': 'a', 'int': 1}
+        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 1, 'char': 'a', 'int': 1}
+        assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 2, 'char': 'a', 'int': 1}
 
         _db.purge_tables()
         assert _db.table('t').insert_multiple(
             [{'int': 1, 'char': 'a'}
             ,{'int': 1, 'char': 'b'}
-            ,{'int': 1, 'char': 'c'}]) == [{'_oid': 1, 'char': 'a', 'int': 1}
-                                            ,{'_oid': 2, 'char': 'b', 'int': 1}
-                                            ,{'_oid': 3, 'char': 'c', 'int': 1}]
+            ,{'int': 1, 'char': 'c'}]) == [{'id': 1, 'char': 'a', 'int': 1}
+                                            ,{'id': 2, 'char': 'b', 'int': 1}
+                                            ,{'id': 3, 'char': 'c', 'int': 1}]
 
         assert _db.table('t').contains(oids=[1, 2])
         assert not _db.table('t').contains(oids=[88])
@@ -351,7 +367,7 @@ def test_insert_object(tmpdir):
         data = [ {'int': 1, 'object' : {'object_id': 2}}]
         _db.table('t').insert_multiple(data)
 
-        assert _db.table('t').all() == [{'_oid': 1, 'int': 1, 'object': {'object_id': 2}}]
+        assert _db.table('t').all() == [{'id': 1, 'int': 1, 'object': {'object_id': 2}}]
 
 def test_insert_invalid_array_string(tmpdir):
     path = str(tmpdir.join('test.db.json'))
@@ -394,7 +410,7 @@ def test_gc(tmpdir):
     table.insert({'something': 'else'})
     table.insert({'int': 13})
     assert len(table.search(where('int') == 13)) == 1
-    assert table.all() == [{'_oid': 1,'something': 'else'}, {'_oid': 2,'int': 13}]
+    assert table.all() == [{'id': 1,'something': 'else'}, {'id': 2,'int': 13}]
     db.close()
 
 
@@ -409,7 +425,7 @@ def test_empty_write(tmpdir):
     PseuDB(path, storage=ReadOnlyMiddleware()).close()
 
 
-def test_not_default_oid (tmpdir):
+def test_not_defaultid (tmpdir):
     path = str(tmpdir.join('test.db.json'))
     db = PseuDB(path)
     table = db.table('foo', id_field='_not_default_id')
@@ -455,8 +471,10 @@ def test_query_cache():
     # Now, modify the result ist
     results.extend([1])
 
-    assert db.table('t').search(query) == [{'_oid': 1,'name': 'foo', 'value': 42}]
+    assert db.table('t').search(query) == [{'id': 1,'name': 'foo', 'value': 42}]
 
 
 def test_pseudb_is_iterable(db):
     assert [r for r in db] == db.table('t').all()
+
+

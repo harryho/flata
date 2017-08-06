@@ -93,4 +93,4 @@ def test_caching_json_write(tmpdir):
 
     # Repoen database
     with PseuDB(path, storage=CachingMiddleware(JSONStorage)) as db:
-        assert db.table('t').all() == [{'_oid':1, 'key': 'value'}]
+        assert db.table('t').all() == [{'id':1, 'key': 'value'}]

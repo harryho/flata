@@ -18,9 +18,9 @@ will have better support for Restful API.
 
 Difference between TinyDB and PseuDB
 
-- **No default table** _default table is removed in PseuDB. User needs to create a table first before inserting any data. 
+- **No default table** The _default table has been removed from PseuDB. User needs to create a table first before inserting any data. 
 
-- **Built-in ID** PseuDB always attachs `_oid` to every record, but user can customize the unique id field for test purpose. 
+- **Built-in ID** PseuDB always attachs `id`, which is the built-in id field, to every record, but user can customize the built-in id field as they prefer. 
 
 - **Only table object can execute CRUD** TinyDB can execute CRUD action, but PseuDB only allow table instance to execute CRUD. This concept is borrowed from lowdb. 
 
@@ -77,7 +77,7 @@ Example code
     >>> tb = db.get('table1')
     >>> tb.search(Query().data == 2)
 
-- Customize default unique id field `_oid`
+- Customize default unique id field `id`
 
 .. code-block:: python
 

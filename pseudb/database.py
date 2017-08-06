@@ -23,7 +23,7 @@ class Element(dict):
 
 class StorageProxy(object):
 
-    DEFAULT_ID_FIELD = '_oid'
+    DEFAULT_ID_FIELD = 'id'
 
     def __init__(self, storage, table_name, **kwargs):
         self._storage = storage

@@ -42,8 +42,8 @@ def test_json_kwargs(tmpdir):
     assert db_file.read() == '''{
     "test_table": [
         {
-            "_oid": 1,
-            "b": 1
+            "b": 1,
+            "id": 1
         }
     ]
 }'''
