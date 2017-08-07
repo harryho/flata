@@ -20,9 +20,9 @@ Difference between TinyDB and PseuDB
 
 - **No default table** The _default table has been removed from PseuDB. User needs to create a table first before inserting any data. 
 
-- **Built-in ID** PseuDB always attachs `id`, which is the built-in id field, to every record, but user can customize the built-in id field as they prefer. 
+- **Built-in ID** PseuDB always attachs a built-in id field, to every record, but user can customize the built-in id field as they prefer. 
 
-- **Only table object can execute CRUD** TinyDB can execute CRUD action, but PseuDB only allow table instance to execute CRUD. This concept is borrowed from lowdb. 
+- **Only table object can execute CRUD** The instance of TinyDB can execute CRUD actions, but it is different story in PseuDB. In PseuDB only the instance of table is allowed to execute CRUD actions. This concept is borrowed from lowdb. 
 
 - **Return object instead of ID** PseuDB will return new or updated objects with IDs after the data is inserted or updated. It is good for Restful API to present the latest data in the database. 
 
@@ -89,7 +89,7 @@ Example code
 Stable release
 **************
 
-- |PseuDB 2.1.0|
+- |PseuDB 3.1.0|
 
 
 Old versions
@@ -121,8 +121,8 @@ Change log
     :target: https://travis-ci.org/harryho/pseudb
 .. |Coverage| image:: https://coveralls.io/repos/github/harryho/pseudb/badge.svg?branch=master
     :target: https://coveralls.io/github/harryho/pseudb?branch=master
-.. |Version| image:: http://img.shields.io/pypi/v/pseudb.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/pseudb/
+.. |Version| image:: https://badge.fury.io/py/pseudb.svg
+    :target: https://badge.fury.io/py/pseudb
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
 .. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
