@@ -214,17 +214,18 @@ def test_queries_search_ignore_case(db):
     assert len(db.table('t').search(Query()['chars'].search_ignore_case('bcda'))) == 0
 
 
-
+@pytest.mark.skipif(sys.version_info < (3, 0),
+                    reason="requires python3")
 def test_queries_any(db):
     db.purge_tables()
     assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
     assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
     assert db.table('t').insert({'int': 3, 'chars': 'x', 'char2': 'abcd'}) == {'id': 3, 'chars': 'x', 'char2': 'abcd', 'int': 3}
 
-    assert len(db.table('t').search(Query()['chars'].any('d'))) == 1
-    assert len(db.table('t').search(Query()['chars'].any('c'))) == 2
+    assert len(db.table('t').search(Query()['chars'].any(['d']))) == 1
+    assert len(db.table('t').search(Query()['chars'].any(['c']))) == 2
+    assert len(db.table('t').search(Query()['chars'].any(['acd']))) == 0
     assert len(db.table('t').search(Query()['chars'].any('acd'))) == 2
-
 
 def test_queries_any_in_list(db):
     db.purge_tables()
@@ -236,15 +237,17 @@ def test_queries_any_in_list(db):
     assert len(db.table('t').search(Query()['charList'].any('ac'))) == 2
     assert len(db.table('t').search(Query()['charList'].any('abcd'))) == 1
 
+@pytest.mark.skipif(sys.version_info < (3, 0),
+                    reason="requires python3")
 def test_queries_all(db):
     db.purge_tables()
     assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
     assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
     assert db.table('t').insert({'int': 3, 'chars': 'x', 'char2': 'abcd'}) == {'id': 3, 'chars': 'x', 'char2': 'abcd', 'int': 3}
 
-    assert len(db.table('t').search(Query()['chars'].all('d'))) == 1
-    assert len(db.table('t').search(Query()['chars'].all('c'))) == 2
-    assert len(db.table('t').search(Query()['chars'].all('ac'))) == 2
+    assert len(db.table('t').search(Query()['chars'].all(['d']))) == 1
+    assert len(db.table('t').search(Query()['chars'].all(['c']))) == 2
+    assert len(db.table('t').search(Query()['chars'].all(['acd']))) == 0
     assert len(db.table('t').search(Query()['chars'].all('acd'))) == 1
 
 
