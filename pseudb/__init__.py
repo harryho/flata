@@ -1,4 +1,7 @@
 """
+
+PseuDB (Version: 3.2.0)
+
 PseuDB is a tiny, document oriented database optimized for your happiness :)
 
 PseuDB stores differrent types of python data types using a configurable
@@ -29,3 +32,5 @@ from .storages import Storage, JSONStorage
 from .database import PseuDB
 
 __all__ = ('PseuDB', 'Storage', 'JSONStorage', 'Query', 'where')
+
+
