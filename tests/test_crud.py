@@ -7,7 +7,6 @@ from pseudb import PseuDB, where, Query
 from pseudb.storages import MemoryStorage
 from pseudb.middlewares import Middleware
 
-
 def test_insert(db):
     db.purge_tables()
     tb = db.table('t')
@@ -153,7 +152,7 @@ def test_update_ids(db):
     assert db.table('t').count(where('int') == 2) == 2
 
 
-def test_search(db):
+def test_queries_where(db):
     assert len(db.table('t').all() ) == 3
     assert not db.table('t')._query_cache
     assert len(db.table('t').search(where('int') == 1)) == 3
@@ -164,13 +163,102 @@ def test_search(db):
     assert len(db.table('t').search((where('int') == 1) & (where('char')=='a'))) == 1
     assert len(db.table('t').search((where('char')=='b') |  (where('char')=='a'))) == 2
 
-def test_search_query(db):
+def test_queries_query(db):
     assert len(db.table('t').search(Query().char == 'a')) == 1
     assert len(db.table('t').search(Query().char == 'b')) == 1
     assert len(db.table('t').search((Query().char == 'c') & (Query().int == 1 ))) == 1
     assert len(db.table('t').search((Query().char == 'c') | (Query().char == 'a' ))) == 2
     assert len(db.table('t').search((Query()['char'] == 'c') & (Query()['int'] == 1 ))) == 1
     assert len(db.table('t').search((Query()['char']== 'c') | (Query()['char'] == 'a' ))) == 2
+
+
+def test_queries_matches(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+
+    assert len(db.table('t').search(Query()['chars'].matches('abcd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].matches('abc'))) == 1
+    assert len(db.table('t').search(Query()['chars'].matches('ad'))) == 0
+    # assert len(db.table('t').search(Query()['chars'].match(['cd']))) == 1
+
+def test_queries_matches_ignore_case(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+
+    assert len(db.table('t').search(Query()['chars'].matches_ignore_case('aBcd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].matches_ignore_case('abcc'))) == 0
+    assert len(db.table('t').search(Query()['chars'].matches_ignore_case('Ab'))) == 1
+
+def test_queries_search(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+
+    assert len(db.table('t').search(Query()['chars'].search('cd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search('d'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search('a'))) == 2
+    assert len(db.table('t').search(Query()['chars'].search('abcd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search('bcda'))) == 0
+
+def test_queries_search_ignore_case(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+
+    assert len(db.table('t').search(Query()['chars'].search_ignore_case('Cd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search_ignore_case('D'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search_ignore_case('a'))) == 2
+    assert len(db.table('t').search(Query()['chars'].search_ignore_case('aBcd'))) == 1
+    assert len(db.table('t').search(Query()['chars'].search_ignore_case('bcda'))) == 0
+
+
+
+def test_queries_any(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+    assert db.table('t').insert({'int': 3, 'chars': 'x', 'char2': 'abcd'}) == {'id': 3, 'chars': 'x', 'char2': 'abcd', 'int': 3}
+
+    assert len(db.table('t').search(Query()['chars'].any(['d']))) == 1
+    assert len(db.table('t').search(Query()['chars'].any(['c']))) == 2
+    assert len(db.table('t').search(Query()['chars'].any(['acd']))) == 0
+    assert len(db.table('t').search(Query()['chars'].any('acd'))) == 2
+
+def test_queries_any_in_list(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'charList': ['abcd', 'a']}) == {'id': 1, 'charList': ['abcd', 'a'], 'int': 1}
+    assert db.table('t').insert({'int': 2, 'charList': ['ac']}) == {'id': 2, 'charList': ['ac'], 'int': 2}
+
+    assert len(db.table('t').search(Query()['charList'].any(['a']))) == 1
+    assert len(db.table('t').search(Query()['charList'].any(['a', 'abcd']))) == 1
+    assert len(db.table('t').search(Query()['charList'].any('ac'))) == 2
+    assert len(db.table('t').search(Query()['charList'].any('abcd'))) == 1
+
+def test_queries_all(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'chars': 'abcd'}) == {'id': 1, 'chars': 'abcd', 'int': 1}
+    assert db.table('t').insert({'int': 2, 'chars': 'ac'}) == {'id': 2, 'chars': 'ac', 'int': 2}
+    assert db.table('t').insert({'int': 3, 'chars': 'x', 'char2': 'abcd'}) == {'id': 3, 'chars': 'x', 'char2': 'abcd', 'int': 3}
+
+    assert len(db.table('t').search(Query()['chars'].all(['d']))) == 1
+    assert len(db.table('t').search(Query()['chars'].all(['c']))) == 2
+    assert len(db.table('t').search(Query()['chars'].all(['acd']))) == 0
+    assert len(db.table('t').search(Query()['chars'].all('acd'))) == 1
+
+
+def test_queries_all_in_list(db):
+    db.purge_tables()
+    assert db.table('t').insert({'int': 1, 'charList': ['abcd', 'a']}) == {'id': 1, 'charList': ['abcd', 'a'], 'int': 1}
+    assert db.table('t').insert({'int': 2, 'charList': ['ac']}) == {'id': 2, 'charList': ['ac'], 'int': 2}
+
+    assert len(db.table('t').search(Query()['charList'].all(['abcd']))) == 1
+    assert len(db.table('t').search(Query()['charList'].all(['a']))) == 1
+    assert len(db.table('t').search(Query()['charList'].all(['ac']))) == 1
+    assert len(db.table('t').search(Query()['charList'].all('abcd'))) == 0
+    assert len(db.table('t').search(Query()['charList'].all('ac'))) == 0
+
 def test_get(db):
     item = db.table('t').get(where('char') == 'b')
     assert item['char'] == 'b'
@@ -215,8 +303,6 @@ def test_multiple_dbs():
 
     assert len(db1.table('t').all()) == 3
     assert len(db2.table('t').all()) == 1
-
-
 
 
 

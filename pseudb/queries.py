@@ -243,6 +243,19 @@ class Query(object):
         return self._generate_test(lambda value: re.match(regex, value),
                                    ('matches', tuple(self._path), regex))
 
+    def matches_ignore_case(self, regex):
+        """
+        Run a regex test against a dict value (whole string has to match). 
+        It is not case-sensitive.
+
+        >>> Query().f1.matches(r'^\w+$')
+
+        :param regex: The regular expression to use for matching
+        """
+        regex = regex.lower()
+        return self._generate_test(lambda value: re.match(regex, value.lower()),
+                                   ('matches', tuple(self._path), regex))                                   
+
     def search(self, regex):
         """
         Run a regex test against a dict value (only substring string has to
@@ -254,6 +267,19 @@ class Query(object):
         """
         return self._generate_test(lambda value: re.search(regex, value),
                                    ('search', tuple(self._path), regex))
+
+    def search_ignore_case(self, regex):
+        """
+        Run a regex test against a dict value (only substring string has to
+        match). It is not case-sensitive.
+
+        >>> Query().f1.search(r'^\w+$')
+
+        :param regex: The regular expression to use for matching
+        """
+        regex = regex.lower()
+        return self._generate_test(lambda value: re.search(regex, value.lower()),
+                                   ('search', tuple(self._path), regex))                                   
 
     def test(self, func, *args):
         """
