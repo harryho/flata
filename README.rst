@@ -89,11 +89,12 @@ Example code
 Stable release
 **************
 
-- |PseuDB 3.1.0|
+- |PseuDB 3.2.0|
 
 
 Old versions
 ************
+- |PseuDB 3.1.0|
 
 - |PseuDB 2.0.0|
 
@@ -102,6 +103,10 @@ Old versions
 
 Change log
 **********
+
+- PseuDB 3.2.0
+
+    Add ignore case feature for search and match methods
 
 - PseuDB 3.1.0
 
@@ -127,4 +132,5 @@ Change log
 .. _lowdb: https://github.com/typicode/lowdb
 .. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
 .. |PseuDB 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.0.0
-.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.1.0 
+.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=3.1.0 
+.. |PseuDB 3.2.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=3.2.0 
