@@ -1,6 +1,6 @@
 """
-Contains the :class:`database <pseudb.database.PseuDB>` and
-:class:`tables <pseudb.database.Table>` implementation.
+Contains the :class:`database <flatdb.database.FlatDB>` and
+:class:`tables <flatdb.database.Table>` implementation.
 """
 from . import JSONStorage
 from .utils import LRUCache, iteritems, itervalues
@@ -71,34 +71,34 @@ class StorageProxy(object):
 
 
 
-class PseuDB(object):
+class FlatDB(object):
     """
-    The main class of PseuDB.
+    The main class of FlatDB.
 
     Gives access to the database, provides methods to create/delete/search
     and getting tables.
 
-    PseuDB is different from TinyDB, which can not access and manipulate 
+    FlatDB is different from TinyDB, which can not access and manipulate 
     data on the table from the instance of PseudB.
 
-    There is no default in PseuDB as well.
+    There is no default in FlatDB as well.
     """
 
     DEFAULT_STORAGE = JSONStorage
 
     def __init__(self, *args, **kwargs):
         """
-        Create a new instance of PseuDB.
+        Create a new instance of FlatDB.
 
         All arguments and keyword arguments will be passed to the underlying
-        storage class (default: :class:`~pseudb.storages.JSONStorage`).
+        storage class (default: :class:`~flatdb.storages.JSONStorage`).
 
         :param storage: The class of the storage to use. Will be initialized
                         with ``args`` and ``kwargs``.
         """
 
-        storage = kwargs.pop('storage', PseuDB.DEFAULT_STORAGE)
-        # table = kwargs.pop('default_table', PseuDB.DEFAULT_TABLE)
+        storage = kwargs.pop('storage', FlatDB.DEFAULT_STORAGE)
+        # table = kwargs.pop('default_table', FlatDB.DEFAULT_TABLE)
 
         # Prepare the storage
         self._opened = False
@@ -118,7 +118,7 @@ class PseuDB(object):
         Get access to a specific table.
 
         Creates a new table, if it hasn't been created before, otherwise it
-        returns the cached :class:`~pseudb.Table` object.
+        returns the cached :class:`~flatdb.Table` object.
 
         :param name: The name of the table. It is a required input.
         :type name: str
@@ -219,7 +219,7 @@ class PseuDB(object):
         """
         Get the total number of elements in the default table.
 
-        >>> db = PseuDB('db.json')
+        >>> db = FlatDB('db.json')
         >>> len(db)
         0
         """
@@ -235,7 +235,7 @@ class PseuDB(object):
 
 class Table(object):
     """
-    Represents a single PseuDB Table.
+    Represents a single FlatDB Table.
     """
 
     def __init__(self, storage, cache_size=10, **kwargs):
@@ -263,7 +263,7 @@ class Table(object):
         Helper function for processing all elements specified by condition
         or IDs.
 
-        A repeating pattern in PseuDB is to run some code on all elements
+        A repeating pattern in FlatDB is to run some code on all elements
         that match a condition or are specified by their ID. This is
         implemented in this function.
         The function passed as ``func`` has to be a callable. It's first
@@ -551,4 +551,4 @@ class Table(object):
         return self.get(cond) is not None
 
 # Set the default table class
-PseuDB.table_class = Table
+FlatDB.table_class = Table

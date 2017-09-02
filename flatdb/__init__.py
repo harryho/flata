@@ -1,19 +1,19 @@
 """
 
-PseuDB (Version: 3.2.0)
+FlatDB (Version: 3.2.0)
 
-PseuDB is a tiny, document oriented database optimized for your happiness :)
+FlatDB is a tiny, document oriented database optimized for your happiness :)
 
-PseuDB stores differrent types of python data types using a configurable
+FlatDB stores differrent types of python data types using a configurable
 backend. It has support for handy querying and tables.
 
 .. codeauthor:: Harry Ho <harry.ho_long@yahoo.com>
 
 Usage example:
 
->>> from pseudb. import PseuDB, where
->>> from pseudb.storages import MemoryStorage
->>> db = PseuDB(storage=MemoryStorage)
+>>> from flatdb. import FlatDB, where
+>>> from flatdb.storages import MemoryStorage
+>>> db = FlatDB(storage=MemoryStorage)
 >>> tb = db.table('table1')
 >>> tb.insert({'data': 0}) 
 >>> tb.search(where('data') == 5)
@@ -29,8 +29,8 @@ Usage example:
 
 from .queries import Query, where
 from .storages import Storage, JSONStorage
-from .database import PseuDB
+from .database import FlatDB
 
-__all__ = ('PseuDB', 'Storage', 'JSONStorage', 'Query', 'where')
+__all__ = ('FlatDB', 'Storage', 'JSONStorage', 'Query', 'where')
 
 

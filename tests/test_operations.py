@@ -1,5 +1,5 @@
-from pseudb import where
-from pseudb.operations import delete, increment, decrement
+from flatdb import where
+from flatdb.operations import delete, increment, decrement
 
 
 def test_delete(db):

@@ -7,8 +7,8 @@ import pytest
 
 random.seed()
 
-from pseudb import PseuDB, where
-from pseudb.storages import JSONStorage, MemoryStorage, Storage
+from flatdb import FlatDB, where
+from flatdb.storages import JSONStorage, MemoryStorage, Storage
 
 element = {'none': [None, None], 'int': 42, 'float': 3.1415899999999999,
            'list': ['LITE', 'RES_ACID', 'SUS_DEXT'],
@@ -29,7 +29,7 @@ def test_json(tmpdir):
 
 def test_json_kwargs(tmpdir):
     db_file = tmpdir.join('test.db.json')
-    db = PseuDB(str(db_file), sort_keys=True, indent=4, separators=(',', ': '))
+    db = FlatDB(str(db_file), sort_keys=True, indent=4, separators=(',', ': '))
 
     # Create table test_table
     tb = db.table('test_table')
@@ -56,8 +56,8 @@ def test_json_readwrite(tmpdir):
     """
     path = str(tmpdir.join('test.db.json'))
 
-    # Create PseuDB instance
-    db = PseuDB(path, storage=JSONStorage)
+    # Create FlatDB instance
+    db = FlatDB(path, storage=JSONStorage)
 
     # Create table test_table
     tb = db.table('test_table')
@@ -103,7 +103,7 @@ def test_create_dirs():
 
 def test_json_invalid_directory():
     with pytest.raises(IOError):
-        with PseuDB('/this/is/an/invalid/path/db.json', storage=JSONStorage):
+        with FlatDB('/this/is/an/invalid/path/db.json', storage=JSONStorage):
             pass
 
 
@@ -122,7 +122,7 @@ def test_in_memory():
 
 
 def test_in_memory_close():
-    with PseuDB(storage=MemoryStorage) as db:
+    with FlatDB(storage=MemoryStorage) as db:
         db.table('t').insert({})
 
 

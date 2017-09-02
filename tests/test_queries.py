@@ -1,5 +1,5 @@
 import pytest
-from pseudb.queries import Query
+from flatdb.queries import Query
 
 
 def test_no_path():

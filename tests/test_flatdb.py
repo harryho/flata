@@ -1,8 +1,8 @@
 import pytest
 
-from pseudb import PseuDB, where
-from pseudb.storages import MemoryStorage
-# from pseudb.middlewares import Middleware
+from flatdb import FlatDB, where
+from flatdb.storages import MemoryStorage
+# from flatdb.middlewares import Middleware
 
 
 def test_purge(db):
@@ -27,7 +27,7 @@ def test_table_all(db):
 
 def test_purge_table():
     table_name = 'some-other-table'
-    db = PseuDB(storage=MemoryStorage)
+    db = FlatDB(storage=MemoryStorage)
     db.table(table_name)
     assert set([table_name]) == db.tables()
 
@@ -49,7 +49,7 @@ def test_storage_closed_once():
             assert not self.closed
             self.closed = True
 
-    with PseuDB(storage=Storage) as db:
+    with FlatDB(storage=Storage) as db:
         db.close()
 
     del db

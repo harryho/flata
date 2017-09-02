@@ -1,11 +1,11 @@
-PseuDB
+FlatDB
 ----
 
 |Build Status| |Coverage| |Version|
 
 
-PseuDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
-oriented database optimized for PseuServer and fun :) It's written in pure
+FlatDB is inspired by TinyDB_ and lowdb_. It is a lightweight document 
+oriented database optimized for FlatApi and fun :) It's written in pure
 Python and has no external dependencies. The target are small apps or 
 fake api that would be blown away by a SQL-DB or an external database server.
 
@@ -13,20 +13,20 @@ Many thanks to :
 ================
 
 Markus Siemens's TinyDB. All credit should go to Markus, upon his hard work
-I can create the PseuDB as what I want. I borrow some concepts from lowdb which 
+I can create the FlatDB as what I want. I borrow some concepts from lowdb which 
 will have better support for Restful API. 
 
-Difference between TinyDB and PseuDB
+Difference between TinyDB and FlatDB
 
-- **No default table** The _default table has been removed from PseuDB. User needs to create a table first before inserting any data. 
+- **No default table** The _default table has been removed from FlatDB. User needs to create a table first before inserting any data. 
 
-- **Built-in ID** PseuDB always attachs a built-in id field, to every record, but user can customize the built-in id field as they prefer. 
+- **Built-in ID** FlatDB always attachs a built-in id field, to every record, but user can customize the built-in id field as they prefer. 
 
-- **Only table object can execute CRUD** The instance of TinyDB can execute CRUD actions, but it is different story in PseuDB. In PseuDB only the instance of table is allowed to execute CRUD actions. This concept is borrowed from lowdb. 
+- **Only table object can execute CRUD** The instance of TinyDB can execute CRUD actions, but it is different story in FlatDB. In FlatDB only the instance of table is allowed to execute CRUD actions. This concept is borrowed from lowdb. 
 
-- **Return object instead of ID** PseuDB will return new or updated objects with IDs after the data is inserted or updated. It is good for Restful API to present the latest data in the database. 
+- **Return object instead of ID** FlatDB will return new or updated objects with IDs after the data is inserted or updated. It is good for Restful API to present the latest data in the database. 
 
-- **Format of database is not compatible** Database file created by TinyDB will not be compatible with PseuDB, because data structure stored as list in PseuDB instead of dict in TinyDB. 
+- **Format of database is not compatible** Database file created by TinyDB will not be compatible with FlatDB, because data structure stored as list in FlatDB instead of dict in TinyDB. 
 
 
 Installation
@@ -36,13 +36,13 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install pseudb
+    $ pip install flatdb
 
 - Via github
 
 .. code-block:: bash
 
-    $ pip install -e git+https://github.com/harryho/pseudb@master#egg=pseudb
+    $ pip install -e git+https://github.com/harryho/flatdb@master#egg=flatdb
 
 
 Example code
@@ -52,9 +52,9 @@ Example code
 
 .. code-block:: python
 
-    >>> from pseudb import PseuDB, where
-    >>> from pseudb.storages import JSONStorage
-    >>> db = PseuDB('/path/to/db.json', storage=JSONStorage)
+    >>> from flatdb import FlatDB, where
+    >>> from flatdb.storages import JSONStorage
+    >>> db = FlatDB('/path/to/db.json', storage=JSONStorage)
     >>> db.table('table1') # Method table will create or retrieve if it exists
     >>> db.get('table1')  # Method get only retrieve the table it exists
 
@@ -89,48 +89,48 @@ Example code
 Stable release
 **************
 
-- |PseuDB 3.2.0|
+- |FlatDB 3.2.0|
 
 
 Old versions
 ************
-- |PseuDB 3.1.0|
+- |FlatDB 3.1.0|
 
-- |PseuDB 2.0.0|
+- |FlatDB 2.0.0|
 
-- |PseuDB 1.1.0|
+- |FlatDB 1.1.0|
 
 
 Change log
 **********
 
-- PseuDB 3.2.0
+- FlatDB 3.2.0
 
     Add ignore case feature for search and match methods
 
-- PseuDB 3.1.0
+- FlatDB 3.1.0
 
     Change the get method 
 
-- PseuDB 3.0.0 
+- FlatDB 3.0.0 
 
     Change the built-in field from '_oid' to 'id'.
 
-- PseuDB 2.1.0
+- FlatDB 2.1.0
 
     Change the insert and update method to return new or updated objects.
 
 
 
-.. |Build Status| image:: https://travis-ci.org/harryho/pseudb.svg?branch=master
-    :target: https://travis-ci.org/harryho/pseudb
-.. |Coverage| image:: https://coveralls.io/repos/github/harryho/pseudb/badge.svg?branch=master
-    :target: https://coveralls.io/github/harryho/pseudb?branch=master
-.. |Version| image:: https://badge.fury.io/py/pseudb.svg
-    :target: https://badge.fury.io/py/pseudb
+.. |Build Status| image:: https://travis-ci.org/harryho/flatdb.svg?branch=master
+    :target: https://travis-ci.org/harryho/flatdb
+.. |Coverage| image:: https://coveralls.io/repos/github/harryho/flatdb/badge.svg?branch=master
+    :target: https://coveralls.io/github/harryho/flatdb?branch=master
+.. |Version| image:: https://badge.fury.io/py/flatdb.svg
+    :target: https://badge.fury.io/py/flatdb
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
-.. |PseuDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=1.1.0
-.. |PseuDB 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=2.0.0
-.. |PseuDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=3.1.0 
-.. |PseuDB 3.2.0| :target:: https://pypi.python.org/pypi?:action=display&name=pseudb&version=3.2.0 
+.. |FlatDB 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=flatdb&version=1.1.0
+.. |FlatDB 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=flatdb&version=2.0.0
+.. |FlatDB 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=flatdb&version=3.1.0 
+.. |FlatDB 3.2.0| :target:: https://pypi.python.org/pypi?:action=display&name=flatdb&version=3.2.0 

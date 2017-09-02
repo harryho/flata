@@ -1,5 +1,5 @@
 """
-Contains the :class:`base class <pseudb.storages.Storage>` for storages and
+Contains the :class:`base class <flatdb.storages.Storage>` for storages and
 implementations.
 """
 

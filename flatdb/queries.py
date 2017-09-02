@@ -1,7 +1,7 @@
 """
 Contains the querying interface.
 
-Starting with :class:`~pseudb.queries.Query` you can construct complex
+Starting with :class:`~flatdb.queries.Query` you can construct complex
 queries:
 
 >>> ((where('f1') == 5) & (where('f2') != 2)) | where('s').matches(r'^\w+$')
@@ -74,9 +74,9 @@ class QueryImpl(object):
 
 class Query(object):
     """
-    PseuDB Queries.
+    FlatDB Queries.
 
-    Allows to build queries for PseuDB databases. There are two main ways of
+    Allows to build queries for FlatDB databases. There are two main ways of
     using queries:
 
     1) ORM-like usage:
@@ -120,7 +120,7 @@ class Query(object):
 
         :param test: The test the query executes.
         :param hashval: The hash of the query.
-        :return: A :class:`~pseudb.queries.QueryImpl` object
+        :return: A :class:`~flatdb.queries.QueryImpl` object
         """
         if not self._path:
             raise ValueError('Query has no path')

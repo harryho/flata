@@ -1,8 +1,8 @@
 import os
 
-from pseudb import PseuDB
-from pseudb.middlewares import CachingMiddleware
-from pseudb.storages import MemoryStorage, JSONStorage
+from flatdb import FlatDB
+from flatdb.middlewares import CachingMiddleware
+from flatdb.storages import MemoryStorage, JSONStorage
 
 if 'xrange' not in dir(__builtins__):
     # noinspection PyShadowingBuiltins
@@ -24,7 +24,7 @@ def test_caching(storage):
 
 
 def test_caching_read():
-    db = PseuDB(storage=CachingMiddleware(MemoryStorage))
+    db = FlatDB(storage=CachingMiddleware(MemoryStorage))
     assert not db.all()
 
 
@@ -79,7 +79,7 @@ def test_nested():
 def test_caching_json_write(tmpdir):
     path = str(tmpdir.join('test.db'))
 
-    with PseuDB(path, storage=CachingMiddleware(JSONStorage)) as db:
+    with FlatDB(path, storage=CachingMiddleware(JSONStorage)) as db:
         db.table('t').insert({'key': 'value'})
 
     # Verify database filesize
@@ -92,5 +92,5 @@ def test_caching_json_write(tmpdir):
     del db
 
     # Repoen database
-    with PseuDB(path, storage=CachingMiddleware(JSONStorage)) as db:
+    with FlatDB(path, storage=CachingMiddleware(JSONStorage)) as db:
         assert db.table('t').all() == [{'id':1, 'key': 'value'}]

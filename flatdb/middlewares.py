@@ -1,24 +1,24 @@
 """
-Contains the :class:`base class <pseudb.middlewares.Middleware>` for
+Contains the :class:`base class <flatdb.middlewares.Middleware>` for
 middlewares and implementations.
 """
-from . import PseuDB
+from . import FlatDB
 
 
 class Middleware(object):
     """
     The base class for all Middlewares.
 
-    Middlewares hook into the read/write process of PseuDB allowing you to
+    Middlewares hook into the read/write process of FlatDB allowing you to
     extend the behaviour by adding caching, logging, ...
 
     Your middleware's ``__init__`` method has to accept exactly one
     argument which is the class of the "real" storage. It has to be stored as
-    ``_storage_cls`` (see :class:`~pseudb.middlewares.CachingMiddleware` for an
+    ``_storage_cls`` (see :class:`~flatdb.middlewares.CachingMiddleware` for an
     example).
     """
 
-    def __init__(self, storage_cls=PseuDB.DEFAULT_STORAGE):
+    def __init__(self, storage_cls=FlatDB.DEFAULT_STORAGE):
         self._storage_cls = storage_cls
         self.storage = None
 
@@ -26,11 +26,11 @@ class Middleware(object):
         """
         Create the storage instance and store it as self.storage.
 
-        Usually a user creates a new PseuDB instance like this::
+        Usually a user creates a new FlatDB instance like this::
 
-            PseuDB(storage=StorageClass)
+            FlatDB(storage=StorageClass)
 
-        The storage kwarg is used by PseuDB this way::
+        The storage kwarg is used by FlatDB this way::
 
             self.storage = storage(*args, **kwargs)
 
@@ -42,17 +42,17 @@ class Middleware(object):
 
                                        The 'real' storage class
                                        v
-            PseuDB(storage=Middleware(StorageClass))
+            FlatDB(storage=Middleware(StorageClass))
                        ^
                        Already an instance!
 
         So, when running ``self.storage = storage(*args, **kwargs)`` Python
-        now will call ``__call__`` and PseuDB will expect the return value to
+        now will call ``__call__`` and FlatDB will expect the return value to
         be the storage (or Middleware) instance. Returning the instance is
         simple, but we also got the underlying (*real*) StorageClass as an
         __init__ argument that still is not an instance.
         So, we initialize it in __call__ forwarding any arguments we recieve
-        from PseuDB (``PseuDB(arg1, kwarg1=value, storage=...)``).
+        from FlatDB (``FlatDB(arg1, kwarg1=value, storage=...)``).
 
         In case of nested Middlewares, calling the instance as if it was an
         class results in calling ``__call__`` what initializes the next
@@ -75,9 +75,9 @@ class Middleware(object):
 
 class CachingMiddleware(Middleware):
     """
-    Add some caching to PseuDB.
+    Add some caching to FlatDB.
 
-    This Middleware aims to improve the performance of PseuDB by writing only
+    This Middleware aims to improve the performance of FlatDB by writing only
     the last DB state every :attr:`WRITE_CACHE_SIZE` time and reading always
     from cache.
     """
@@ -85,7 +85,7 @@ class CachingMiddleware(Middleware):
     #: The number of write operations to cache before writing to disc
     WRITE_CACHE_SIZE = 1000
 
-    def __init__(self, storage_cls=PseuDB.DEFAULT_STORAGE):
+    def __init__(self, storage_cls=FlatDB.DEFAULT_STORAGE):
         super(CachingMiddleware, self).__init__(storage_cls)
 
         self.cache = None

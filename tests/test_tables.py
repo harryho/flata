@@ -1,4 +1,4 @@
-from pseudb import where
+from flatdb import where
 
 
 def test_tables_list(db):
@@ -57,7 +57,7 @@ def test_query_cache_size(db):
 
 
 def test_lru_cache(db):
-    # Test integration into PseuDB
+    # Test integration into FlatDB
     table = db.table('table3', cache_size=2)
     query = where('int') == 1
 

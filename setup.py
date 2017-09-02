@@ -10,7 +10,7 @@ def read(fname):
 
 
 setup(
-    name="pseudb",
+    name="flatdb",
     version="3.2.0",
     packages=find_packages(),
 
@@ -20,11 +20,11 @@ setup(
     # metadata for upload to PyPI
     author="Harry Ho",
     author_email="harry.ho_long@yahoo.com",
-    description="PseuDB is inspired by TinyDB and lowdb. It is a tiny, document oriented database optimized for "
-                "PseuServer and fun :)",
+    description="FlatDB is inspired by TinyDB and lowdb. It is a tiny, document oriented database optimized for "
+                "FlatApi and fun :)",
     license="MIT",
     keywords="database json nosql",
-    url="https://github.com/harryho/pseudb",
+    url="https://github.com/harryho/flatdb",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
