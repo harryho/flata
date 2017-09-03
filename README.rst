@@ -89,16 +89,13 @@ Example code
 Stable release
 **************
 
-- |Flata 3.2.0|
+- |Flata 3.3.1|
 
 
 Old versions
 ************
-- |Flata 3.1.0|
+- |Flata 3.2.0|
 
-- |Flata 2.0.0|
-
-- |Flata 1.1.0|
 
 
 Change log
@@ -116,9 +113,6 @@ Change log
 
     Change the built-in field from '_oid' to 'id'.
 
-- Flata 2.1.0
-
-    Change the insert and update method to return new or updated objects.
 
 
 
@@ -130,7 +124,9 @@ Change log
     :target: https://badge.fury.io/py/flata
 .. _TinyDB: https://github.com/msiemens/tinydb
 .. _lowdb: https://github.com/typicode/lowdb
+
 .. |Flata 1.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=1.1.0
 .. |Flata 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=2.0.0
 .. |Flata 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=3.1.0 
 .. |Flata 3.2.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=3.2.0 
+.. |Flata 3.3.1| :target:: https://pypi.python.org/pypi?:action=urls&name=flata&version=3.3.1

@@ -1,6 +1,6 @@
 """
 
-Flata (Version: 3.3.0)
+Flata (Version: 3.3.1)
 
 Flata is a tiny, document oriented database optimized for your happiness :)
 
