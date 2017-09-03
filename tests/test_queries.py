@@ -1,5 +1,5 @@
 import pytest
-from flatdb.queries import Query
+from flata.queries import Query
 
 
 def test_no_path():

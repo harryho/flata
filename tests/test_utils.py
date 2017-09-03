@@ -1,7 +1,7 @@
 import warnings
 import pytest
 
-from flatdb.utils import LRUCache, catch_warning, freeze, FrozenDict
+from flata.utils import LRUCache, catch_warning, freeze, FrozenDict
 
 
 def test_lru_cache():

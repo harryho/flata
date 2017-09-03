@@ -1,5 +1,5 @@
-from flatdb import where
-from flatdb.operations import delete, increment, decrement
+from flata import where
+from flata.operations import delete, increment, decrement
 
 
 def test_delete(db):

@@ -3,9 +3,9 @@ import sys
 
 import pytest
 
-from flatdb import FlatDB, where, Query
-from flatdb.storages import MemoryStorage
-from flatdb.middlewares import Middleware
+from flata import Flata, where, Query
+from flata.storages import MemoryStorage
+from flata.middlewares import Middleware
 
 def test_insert(db):
     db.purge_tables()
@@ -295,8 +295,8 @@ def test_get_idempotent(db):
 
 
 def test_multiple_dbs():
-    db1 = FlatDB(storage=MemoryStorage)
-    db2 = FlatDB(storage=MemoryStorage)
+    db1 = Flata(storage=MemoryStorage)
+    db2 = Flata(storage=MemoryStorage)
 
     db1.table('t').insert({'int': 1, 'char': 'a'})
     db1.table('t').insert({'int': 1, 'char': 'b'})
@@ -316,19 +316,19 @@ def test_unique_ids(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
     # Verify ids are unique when reopening the DB and inserting
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.table('t').insert({'x': 1})
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.table('t').insert({'x': 1})
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         data = _db.table('t').all()
 
         assert data[0].id != data[1].id
 
     # Verify ids stay unique when inserting/removing
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         _db.table('t').insert_multiple({'x': i} for i in range(5))
         _db.table('t').remove(where('x') == 2)
@@ -343,10 +343,10 @@ def test_lastid_after_open(tmpdir):
     NUM = 100
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.table('t').insert_multiple({'i': i} for i in range(NUM))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         assert _db.table('t')._last_id == NUM
 
 
@@ -377,7 +377,7 @@ def test_unicode_json(tmpdir):
 
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         _db.table('t').insert({'value': byte_str1})
         _db.table('t').insert({'value': byte_str2})
@@ -386,7 +386,7 @@ def test_unicode_json(tmpdir):
         assert _db.table('t').contains(where('value') == byte_str2)
         assert _db.table('t').contains(where('value') == unic_str2)
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         _db.table('t').insert({'value': unic_str1})
         _db.table('t').insert({'value': unic_str2})
@@ -399,7 +399,7 @@ def test_unicode_json(tmpdir):
 def testids_json(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 1, 'char': 'a', 'int': 1}
         assert _db.table('t').insert({'int': 1, 'char': 'a'}) == {'id': 2, 'char': 'a', 'int': 1}
@@ -430,7 +430,7 @@ def testids_json(tmpdir):
 def test_insert_object(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         data = [ {'int': 1, 'object' : {'object_id': 2}}]
         _db.table('t').insert_multiple(data)
@@ -440,7 +440,7 @@ def test_insert_object(tmpdir):
 def test_insert_invalid_array_string(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         data = [{'int': 1}, {'int': 2}]
         _db.table('t').insert_multiple(data)
 
@@ -458,7 +458,7 @@ def test_insert_invalid_array_string(tmpdir):
 def test_insert_invalid_dict(tmpdir):
     path = str(tmpdir.join('test.db.json'))
 
-    with FlatDB(path) as _db:
+    with Flata(path) as _db:
         _db.purge_tables()
         data = [{'int': 1}, {'int': 2}]
         _db.table('t').insert_multiple(data)
@@ -473,7 +473,7 @@ def test_insert_invalid_dict(tmpdir):
 
 def test_gc(tmpdir):
     path = str(tmpdir.join('test.db.json'))
-    db = FlatDB(path)
+    db = Flata(path)
     table = db.table('foo')
     table.insert({'something': 'else'})
     table.insert({'int': 13})
@@ -489,20 +489,20 @@ def test_empty_write(tmpdir):
         def write(self, data):
             raise AssertionError('No write for unchanged db')
 
-    FlatDB(path).close()
-    FlatDB(path, storage=ReadOnlyMiddleware()).close()
+    Flata(path).close()
+    Flata(path, storage=ReadOnlyMiddleware()).close()
 
 
 def test_not_defaultid (tmpdir):
     path = str(tmpdir.join('test.db.json'))
-    db = FlatDB(path)
+    db = Flata(path)
     table = db.table('foo', id_field='_not_default_id')
     table.insert({'something': 'else'})
     assert table.all() == [{'_not_default_id': 1,'something': 'else'}]
 
 def test_update_with_not_default_id(tmpdir):
     path = str(tmpdir.join('test.db.json'))
-    db = FlatDB(path)
+    db = Flata(path)
     table = db.table('foo', id_field='_not_default_id')
     table.insert({'something': 'else'})
 
@@ -515,7 +515,7 @@ def test_update_with_not_default_id(tmpdir):
 
 def test_remove_with_not_default_id(tmpdir):
     path = str(tmpdir.join('test.db.json'))
-    db = FlatDB(path)
+    db = Flata(path)
     table = db.table('foo', id_field='_not_default_id')
     table.insert({'something': 'else'})
 
@@ -526,7 +526,7 @@ def test_remove_with_not_default_id(tmpdir):
     assert db.table('foo').all() == []
 
 def test_query_cache():
-    db = FlatDB(storage=MemoryStorage)
+    db = Flata(storage=MemoryStorage)
     db.table('t').insert_multiple([
         {'name': 'foo', 'value': 42},
         {'name': 'bar', 'value': -1337}

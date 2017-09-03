@@ -1,8 +1,8 @@
 import pytest
 
-from flatdb import FlatDB, where
-from flatdb.storages import MemoryStorage
-# from flatdb.middlewares import Middleware
+from flata import Flata, where
+from flata.storages import MemoryStorage
+# from flata.middlewares import Middleware
 
 
 def test_purge(db):
@@ -27,7 +27,7 @@ def test_table_all(db):
 
 def test_purge_table():
     table_name = 'some-other-table'
-    db = FlatDB(storage=MemoryStorage)
+    db = Flata(storage=MemoryStorage)
     db.table(table_name)
     assert set([table_name]) == db.tables()
 
@@ -49,7 +49,7 @@ def test_storage_closed_once():
             assert not self.closed
             self.closed = True
 
-    with FlatDB(storage=Storage) as db:
+    with Flata(storage=Storage) as db:
         db.close()
 
     del db

@@ -2,11 +2,11 @@ Contribution Guidelines
 #######################
 
 Whether reporting bugs, discussing improvements and new ideas or writing
-extensions: Contributions to FlatDB are welcome! Here's how to get started:
+extensions: Contributions to Flata are welcome! Here's how to get started:
 
 1. Check for open issues or open a fresh issue to start a discussion around
    a feature idea or a bug
-2. Fork `the repository <https://github.com/harryho/flatdb/>`_ on GitHub,
+2. Fork `the repository <https://github.com/harryho/flata/>`_ on GitHub,
    create a new branch off the `master` branch and start making your changes
    (known as `GitHub Flow <https://guides.github.com/introduction/flow/index.html>`_)
 3. Write a test which shows that the bug was fixed or that the feature works
@@ -14,10 +14,10 @@ extensions: Contributions to FlatDB are welcome! Here's how to get started:
 4. Send a pull request and bug the maintainer until it gets merged and
    published :)
 
-Philosophy of FlatDB
+Philosophy of Flata
 ********************
 
-FlatDB aims to be simple and fun to use. Therefore two key values are simplicity
+Flata aims to be simple and fun to use. Therefore two key values are simplicity
 and elegance of interfaces and code. These values will contradict each other
 from time to time. In these cases , try using as little magic as possible.
 In any case don't forget documenting code that isn't clear at first glance.
@@ -25,7 +25,7 @@ In any case don't forget documenting code that isn't clear at first glance.
 Code Conventions
 ****************
 
-In general the FlatDB source should always follow `PEP 8 <http://legacy.python.org/dev/peps/pep-0008/>`_.
+In general the Flata source should always follow `PEP 8 <http://legacy.python.org/dev/peps/pep-0008/>`_.
 Exceptions are allowed in well justified and documented cases. However we make
 a small exception concerning docstrings:
 
@@ -44,6 +44,6 @@ on their own lines and add an empty line after it.
 Version Numbers
 ***************
 
-FlatDB follows the `SemVer versioning guidelines <http://semver.org/>`_.
+Flata follows the `SemVer versioning guidelines <http://semver.org/>`_.
 This implies that backwards incompatible changes in the API will increment
 the major version. So think twice before making such changes.
