@@ -88,12 +88,13 @@ Example code
 
 Stable release
 **************
+- |Flata 4.0.0|
 
-- |Flata 3.3.1|
 
 
 Old versions
 ************
+- |Flata 3.3.1|
 - |Flata 3.2.0|
 
 
@@ -115,7 +116,6 @@ Change log
 
 
 
-
 .. |Build Status| image:: https://travis-ci.org/harryho/flata.svg?branch=master
     :target: https://travis-ci.org/harryho/flata
 .. |Coverage| image:: https://coveralls.io/repos/github/harryho/flata/badge.svg?branch=master
@@ -129,4 +129,5 @@ Change log
 .. |Flata 2.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=2.0.0
 .. |Flata 2.1.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=3.1.0 
 .. |Flata 3.2.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=3.2.0 
-.. |Flata 3.3.1| :target:: https://pypi.python.org/pypi?:action=urls&name=flata&version=3.3.1
+.. |Flata 3.3.1| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=3.3.1
+.. |Flata 4.0.0| :target:: https://pypi.python.org/pypi?:action=display&name=flata&version=4.0.0
