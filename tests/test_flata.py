@@ -1,7 +1,7 @@
 import pytest
 
 from flata import Flata, where
-from flata.storages import MemoryStorage
+from flata.storages import MemoryStorage, JSONStorage
 # from flata.middlewares import Middleware
 
 
@@ -55,3 +55,18 @@ def test_storage_closed_once():
     del db
     # If db.close() is called during cleanup, the assertion will fail and throw
     # and exception    
+
+def test_flata_memory_storage():
+    with Flata('db.json', storage=MemoryStorage) as db:
+        assert  isinstance( db._storage, MemoryStorage)
+        db.close()
+
+def test_flata_json_storage():
+    with Flata('db.json', storage=JSONStorage) as db:
+        assert  isinstance( db._storage, JSONStorage)
+        db.close()        
+
+def test_flata_default_storage():
+    with Flata('db.json', storage=JSONStorage) as db:
+        assert  isinstance( db._storage, JSONStorage)
+        db.close()           

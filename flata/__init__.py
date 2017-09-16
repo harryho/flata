@@ -28,9 +28,9 @@ Usage example:
 """
 
 from .queries import Query, where
-from .storages import Storage, JSONStorage
+from .storages import Storage, JSONStorage, MemoryStorage
 from .database import Flata
 
-__all__ = ('Flata', 'Storage', 'JSONStorage', 'Query', 'where')
+__all__ = ('Flata', 'Storage', 'JSONStorage', 'MemoryStorage','Query', 'where')
 
 

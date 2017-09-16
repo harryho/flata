@@ -2,7 +2,7 @@
 Contains the :class:`database <flata.database.Flata>` and
 :class:`tables <flata.database.Table>` implementation.
 """
-from . import JSONStorage
+from . import JSONStorage, MemoryStorage
 from .utils import LRUCache, iteritems, itervalues
 
 
@@ -104,7 +104,7 @@ class Flata(object):
         self._opened = False
 
         #: :type: Storage
-        self._storage = storage(*args, **kwargs)
+        self._storage = storage() if storage == MemoryStorage else storage(*args, **kwargs) # stoarge() if storage == MemoryStorage else 
 
         self._opened = True
 
