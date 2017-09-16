@@ -1,6 +1,7 @@
 import pytest
 
 from flata import Flata, where
+from flata.middlewares import CachingMiddleware
 from flata.storages import MemoryStorage, JSONStorage
 # from flata.middlewares import Middleware
 
@@ -61,10 +62,21 @@ def test_flata_memory_storage():
         assert  isinstance( db._storage, MemoryStorage)
         db.close()
 
+def test_flata_caching_memory_storage():
+    with Flata('db.json', storage=CachingMiddleware(MemoryStorage)) as db:
+        assert  isinstance( db._storage, (CachingMiddleware, MemoryStorage))
+        db.close()        
+
 def test_flata_json_storage():
     with Flata('db.json', storage=JSONStorage) as db:
         assert  isinstance( db._storage, JSONStorage)
+        db.close()   
+
+def test_flata_caching_json_storage():
+    with Flata('db.json', storage=CachingMiddleware(JSONStorage)) as db:
+        assert  isinstance( db._storage, (CachingMiddleware,JSONStorage))
         db.close()        
+             
 
 def test_flata_default_storage():
     with Flata('db.json', storage=JSONStorage) as db:
