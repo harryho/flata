@@ -5,7 +5,7 @@ import pytest
 
 from flata import Flata, where, Query
 from flata.storages import MemoryStorage
-from flata.middlewares import Middleware
+from flata.middlewares import Middleware, CachingMiddleware
 
 def test_insert(db):
     db.purge_tables()
@@ -525,7 +525,7 @@ def test_remove_with_not_default_id(tmpdir):
 
     assert db.table('foo').all() == []
 
-def test_query_cache():
+def test_query_memory_storage():
     db = Flata(storage=MemoryStorage)
     db.table('t').insert_multiple([
         {'name': 'foo', 'value': 42},
@@ -541,6 +541,53 @@ def test_query_cache():
 
     assert db.table('t').search(query) == [{'id': 1,'name': 'foo', 'value': 42}]
 
+
+
+def test_insert_with_external_cache(db):
+    _cache = CachingMiddleware(MemoryStorage)()
+    db = Flata(cache=_cache)
+    tb = db.table('t')
+    tb.insert({'int': 1, 'char': 'a'})
+
+    assert tb.count(where('int') == 1) == 1
+
+    db2 = Flata(cache=_cache)
+    tb = db2.table('t')
+ 
+    db2.table('t').insert({'int': 1, 'char': 'a'})
+    db2.table('t').insert({'int': 1, 'char': 'b'})
+    db2.table('t').insert({'int': 1, 'char': 'c'})
+
+    assert db2.table('t').count(where('int') == 1) == 4
+    assert db2.table('t').count(where('char') == 'a') == 2
+
+def test_remove_with_external_cache(db):
+    _cache = CachingMiddleware(MemoryStorage)()
+    db = Flata(cache=_cache)
+    tb = db.table('t')
+    tb.insert({'int': 1, 'char': 'a'})
+
+    assert tb.count(where('int') == 1) == 1
+
+    db2 = Flata(cache=_cache)
+    tb = db2.table('t')
+ 
+    db2.table('t').remove(where('int') == 1)
+    assert db2.table('t').count(where('int') == 1) == 0
+
+def test_update_with_external_cache(db):
+    _cache = CachingMiddleware(MemoryStorage)()
+    db = Flata(cache=_cache)
+    tb = db.table('t')
+    tb.insert({'int': 1, 'char': 'a'})
+
+    assert tb.count(where('int') == 1) == 1
+    
+    db2 = Flata(cache=_cache)
+    tb = db2.table('t')
+    db2.table('t').update({'int': 2}, where('char') == 'a')
+
+    assert db2.table('t').count(where('int') == 2) == 1
 
 def test_flatdb_is_iterable(db):
     assert [r for r in db] == db.table('t').all()

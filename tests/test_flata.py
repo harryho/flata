@@ -67,6 +67,12 @@ def test_flata_caching_memory_storage():
         assert  isinstance( db._storage, (CachingMiddleware, MemoryStorage))
         db.close()        
 
+def test_flata_external_cache_memory_storage():
+    _cache = CachingMiddleware(MemoryStorage)()
+    with Flata('db.json', cache=_cache) as db:
+        assert  isinstance( db._storage, (CachingMiddleware, MemoryStorage))
+        db.close()          
+
 def test_flata_json_storage():
     with Flata('db.json', storage=JSONStorage) as db:
         assert  isinstance( db._storage, JSONStorage)
@@ -77,6 +83,11 @@ def test_flata_caching_json_storage():
         assert  isinstance( db._storage, (CachingMiddleware,JSONStorage))
         db.close()        
              
+def test_flata_external_cache_json_storage():
+    _cache = CachingMiddleware(JSONStorage)('db.json')
+    with Flata('db.json', cache=_cache) as db:
+        assert  isinstance( db._storage, (CachingMiddleware, JSONStorage))
+        db.close()   
 
 def test_flata_default_storage():
     with Flata('db.json', storage=JSONStorage) as db:

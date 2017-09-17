@@ -95,16 +95,19 @@ class Flata(object):
 
         :param storage: The class of the storage to use. Will be initialized
                         with ``args`` and ``kwargs``.
+        :param cache: The class of the CachingMiddleware to use. If it is not
+                        not null, it will be used as storage.    
         """
 
         storage = kwargs.pop('storage', Flata.DEFAULT_STORAGE)
+        cache = kwargs.pop('cache', None)
         # table = kwargs.pop('default_table', Flata.DEFAULT_TABLE)
 
         # Prepare the storage
         self._opened = False
 
         #: :type: Storage
-        self._storage =  storage() if storage == MemoryStorage else storage(*args, **kwargs)
+        self._storage =  cache if cache else storage(*args, **kwargs)
         # if storage == MemoryStorage else 
 
         self._opened = True
