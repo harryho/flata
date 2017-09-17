@@ -122,7 +122,7 @@ def test_in_memory():
 
 
 def test_in_memory_close():
-    with Flata(storage=MemoryStorage) as db:
+    with Flata('', storage=MemoryStorage) as db:
         db.table('t').insert({})
 
 
