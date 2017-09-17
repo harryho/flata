@@ -117,7 +117,7 @@ class MemoryStorage(Storage):
     Store the data as JSON in memory.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """
         Create a new instance.
         """

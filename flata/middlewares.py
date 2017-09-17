@@ -2,7 +2,7 @@
 Contains the :class:`base class <flata.middlewares.Middleware>` for
 middlewares and implementations.
 """
-from . import Flata
+from .database import Flata
 
 
 class Middleware(object):

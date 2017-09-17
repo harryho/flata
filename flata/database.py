@@ -104,7 +104,8 @@ class Flata(object):
         self._opened = False
 
         #: :type: Storage
-        self._storage = storage() if storage == MemoryStorage else storage(*args, **kwargs) # stoarge() if storage == MemoryStorage else 
+        self._storage =  storage() if storage == MemoryStorage else storage(*args, **kwargs)
+        # if storage == MemoryStorage else 
 
         self._opened = True
 

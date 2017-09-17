@@ -11,7 +11,7 @@ def read(fname):
 
 setup(
     name="flata",
-    version="4.1.0",
+    version="4.2.0",
     packages=find_packages(),
 
     # development metadata

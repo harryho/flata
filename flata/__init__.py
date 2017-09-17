@@ -29,9 +29,9 @@ Usage example:
 
 from .queries import Query, where
 from .storages import Storage, JSONStorage, MemoryStorage
-from .middlewares import CachingMiddleware
+from .middlewares import Middleware, CachingMiddleware
 from .database import Flata
 
-__all__ = ('Flata', 'Storage', 'JSONStorage', 'MemoryStorage','CachingMiddleware', 'Query', 'where')
+__all__ = ('Flata', 'Storage', 'JSONStorage', 'MemoryStorage', 'Middleware', 'CachingMiddleware', 'Query', 'where')
 
 
